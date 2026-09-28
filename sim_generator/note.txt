@@ -1,0 +1,53 @@
+simulation step:
+1. run simulation pipeline
+2. conda activate gnn-pyg
+3. convert root data: ./run_ecal_pyg_pipeline.sh <setup>
+
+simulation pipeline:
+All
+./sim_pipeline.sh \
+  --step all \
+  --simsetup simsetup \
+  --noisesetup noisesetup \
+  --run-number 1 \
+  --sim-array '0-9%5' \
+  --straw-rate 0 \
+  --straw-sigma 15 \
+  --ecal-occ 0 \
+  --submit-sbatch submit.sbatch \
+  --cfg particle_gun.cfg
+
+Step
+./sim_pipeline.sh \
+  --step continue-after-sim \
+  --simsetup simsetup \
+  --noisesetup noisesetup \
+  --run-number 1 \
+  --input-dir /home/comet/davidz/ReconDev/ReconData/datasets/raw/g4/simsetup \
+  --straw-rate 0 \
+  --straw-sigma 15 \
+  --ecal-occ 0
+
+./sim_pipeline.sh \
+  --step noise \
+  --simsetup simsetup \
+  --noisesetup noisesetup \
+  --run-number 1 \
+  --input-dir /home/comet/davidz/ReconDev/ReconData/datasets/raw/g4/simsetup \
+  --straw-rate value \
+  --straw-sigma value \
+  --ecal-occ value
+
+./sim_pipeline.sh \
+  --step detresp \
+  --simsetup simsetup \
+  --noisesetup noisesetup \
+  --run-number 1 \
+  --input-dir /home/comet/davidz/ReconDev/ReconData/datasets/raw/g4_with_noise/simsetup_noisesetup
+
+./sim_pipeline.sh \
+  --step truthmaker \
+  --simsetup simsetup \
+  --noisesetup noisesetup \
+  --run-number 1 \
+  --input-dir /home/comet/davidz/ReconDev/ReconData/datasets/raw/detresp/simsetup_noisesetup
